@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="cbd04827-628c-4934-9f56-3021f8d729f9" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="cc99d272-c4e8-4259-9993-9ffe7869b9db" >
+		<http:request-connection protocol="HTTPS" />
+	</http:request-config>
+	<flow name="target-variableFlow" doc:id="7d286bee-4251-48a9-b346-bab63ce71dfc" >
+		<http:listener doc:name="Listener" doc:id="1dfaa54f-8b0b-4959-809d-76c736fca9ce" config-ref="HTTP_Listener_config" path="/target"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c8306294-160f-44e9-bf85-d983b8a8a7fc" message='#[payload]'/>
+		<http:request method="GET" doc:name="Request" doc:id="4e00349e-b287-47ca-b24b-f2add2399b0d" url="https://worldtimeapi.org/api/timezone/Asia/kolkata.txt" target="timeZone">
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="da4f4e3a-6192-4149-b07a-383c900fcfe5" message='#[payload]'/>
+		<logger level="INFO" doc:name="Logger" doc:id="343eb58b-3b85-462e-a023-bf2fb7d5b5aa" message="#[vars.timeZone]"/>
+	</flow>
+</mule>
